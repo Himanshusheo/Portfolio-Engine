@@ -44,13 +44,12 @@ The codebase is intentionally compact so you can read, modify, and extend it qui
 
 ```mermaid
 flowchart LR
-    P[Price Data (CSV)] --> DL[data_loader<br/>load_prices, compute_returns]
-    DL --> RM[risk_models<br/>covariance, volatility]
-    RM --> OPT[optimizer<br/>mean-variance, risk parity]
-    OPT --> BT[backtest<br/>rebalance loop, portfolio path]
-    BT --> AN[analytics<br/>performance & risk metrics]
-    BT --> SC[scenario<br/>shock & stress evaluation]
-    AN --> SC
+    A[Price Data CSV] --> B[Returns]
+    B --> C[Risk Models]
+    C --> D[Optimizer]
+    D --> E[Backtest Engine]
+    E --> F[Analytics]
+    F --> G[Stress Testing]
 ```
 
 *This diagram shows how raw price files move through `data_loader`, become return series, feed into `risk_models` and `optimizer`, and finally flow through `backtest` into `analytics` and `scenario` modules.*
