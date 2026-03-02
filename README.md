@@ -42,18 +42,35 @@ The codebase is intentionally compact so you can read, modify, and extend it qui
 
 ## System Overview Diagram
 
-*(Insert architecture diagram here)*  
+```mermaid
+flowchart LR
+    P[Price Data (CSV)] --> DL[data_loader<br/>load_prices, compute_returns]
+    DL --> RM[risk_models<br/>covariance, volatility]
+    RM --> OPT[optimizer<br/>mean-variance, risk parity]
+    OPT --> BT[backtest<br/>rebalance loop, portfolio path]
+    BT --> AN[analytics<br/>performance & risk metrics]
+    BT --> SC[scenario<br/>shock & stress evaluation]
+    AN --> SC
+```
 
-> **Suggested content:** Show data sources (price CSVs) feeding into `data_loader`, then `risk_models`, `optimizer`, `backtest`, and finally `analytics` and scenario modules. Highlight how configuration parameters influence each stage.
+*This diagram shows how raw price files move through `data_loader`, become return series, feed into `risk_models` and `optimizer`, and finally flow through `backtest` into `analytics` and `scenario` modules.*
 
 ---
 
 ## Workflow Illustration
 
-*(Insert pipeline flow diagram here)*  
+```mermaid
+flowchart TD
+    A[Load raw price history] --> B[Clean & align series]
+    B --> C[Convert prices to returns]
+    C --> D[Estimate covariance & vol surface]
+    D --> E[Pick allocation rule<br/>(equal-weight, MV, risk-parity)]
+    E --> F[Run rebalancing backtest]
+    F --> G[Compute performance & drawdowns]
+    G --> H[Run stress scenarios on latest weights]
+```
 
-> **Suggested content:** A step-by-step flow of the research process:  
-> prices → returns → risk estimation → strategy → backtest → performance summary → stress scenarios.
+*This pipeline highlights the research workflow: starting from raw prices, you build a risk view, choose a strategy, run a backtest, and then evaluate outcomes and shocks.*
 
 ---
 
@@ -129,8 +146,8 @@ Price CSVs
 Clone the repository and install dependencies into your environment (e.g., `venv`, `conda`):
 
 ```bash
-git clone <YOUR_REPO_URL> Quant-P2
-cd Quant-P2/portfolio_engine
+git clone <YOUR_REPO_URL> portfolio_engine
+cd portfolio_engine
 pip install -r requirements.txt
 ```
 
@@ -174,9 +191,67 @@ Use this script as both:
 
 ## Example Output
 
-*(Insert sample performance chart here)*  
+### Equity Curve (Cumulative Portfolio Value)
 
-> **Suggested content:** A chart showing the cumulative portfolio value for several strategies over time, with a short caption comparing their risk/return profiles (e.g., “Risk-parity smoother drawdowns vs. higher-return mean–variance”).
+**What to plot**
+
+- X-axis: calendar time (backtest dates).  
+- Y-axis: portfolio value (normalized to 1.0 at start).  
+- One line per strategy (e.g., equal-weight, mean–variance, risk-parity).
+
+**How to use it**
+
+- Compare growth profiles across strategies.
+- Visually inspect periods where one allocation clearly outperforms or lags the others.
+
+---
+
+### Drawdown Chart
+
+**What to plot**
+
+- X-axis: calendar time (same horizon as equity curve).  
+- Y-axis: drawdown in percentage terms, computed as  
+  \( 1 - \frac{\text{portfolio value}}{\text{running peak}} \).  
+- One line per strategy, clipped at zero (no positive values).
+
+**How to use it**
+
+- See how deep and how long drawdowns last for each strategy.
+- Contrast smoother risk-parity behavior vs. more aggressive mean–variance allocations.
+
+---
+
+### Portfolio Weights Evolution
+
+**What to plot**
+
+- X-axis: rebalance dates.  
+- Y-axis: stacked area showing weight per asset (summing to 100% at each date).  
+- One stacked area chart per strategy, or subplots comparing strategies.
+
+**How to use it**
+
+- Understand how each strategy shifts capital over time.
+- Spot concentration risk, turnover, and stabilizing vs. reactive behavior.
+
+---
+
+### Strategy Comparison (Suggested Summary Visual)
+
+To summarize strategies side by side, add a small set of comparison charts or a table.
+
+**Bar Chart: Key Metrics by Strategy**
+
+- X-axis: strategy name (Equal-Weight, Mean–Variance, Risk-Parity).  
+- Y-axis: metric value.  
+- Separate bar charts or grouped bars for:
+  - Annualized return
+  - Annualized volatility
+  - Sharpe ratio
+  - Maximum drawdown
+
+This makes it easy to benchmark trade-offs between return, risk, and efficiency for each allocation rule.
 
 ---
 
@@ -273,18 +348,6 @@ Some natural extensions you might consider:
 
 ---
 
-## Use Cases
-
-- **Education & training**  
-  Demonstrate portfolio construction, rebalancing, and risk measurement in a hands-on way.
-
-- **Interview preparation**  
-  Use the project to showcase how you think about asset allocation, risk control, and backtesting design.
-
-- **Research prototypes**  
-  Quickly test new allocation ideas before porting them to larger, more complex systems.
-
----
 
 
 
