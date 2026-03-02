@@ -60,13 +60,15 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Load raw price history] --> B[Clean & align series]
-    B --> C[Convert prices to returns]
-    C --> D[Estimate covariance & vol surface]
-    D --> E[Pick allocation rule<br/>(equal-weight, MV, risk-parity)]
-    E --> F[Run rebalancing backtest]
-    F --> G[Compute performance & drawdowns]
-    G --> H[Run stress scenarios on latest weights]
+    A[Load Prices]
+    B[Compute Returns]
+    C[Estimate Risk]
+    D[Choose Strategy]
+    E[Rebalance Portfolio]
+    F[Compute Metrics]
+    G[Run Stress Scenario]
+
+    A --> B --> C --> D --> E --> F --> G
 ```
 
 *This pipeline highlights the research workflow: starting from raw prices, you build a risk view, choose a strategy, run a backtest, and then evaluate outcomes and shocks.*
