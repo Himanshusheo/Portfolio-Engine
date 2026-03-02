@@ -192,68 +192,42 @@ Use this script as both:
 
 ## Example Output
 
-### Equity Curve (Cumulative Portfolio Value)
+### Equity Curve
 
-**What to plot**
+Shows cumulative portfolio value for each strategy, starting from a normalized base of 1.0.
 
-- X-axis: calendar time (backtest dates).  
-- Y-axis: portfolio value (normalized to 1.0 at start).  
-- One line per strategy (e.g., equal-weight, mean–variance, risk-parity).
+![Equity Curve](docs/images/equity_curve.png)
 
-**How to use it**
-
-- Compare growth profiles across strategies.
-- Visually inspect periods where one allocation clearly outperforms or lags the others.
+*Used to compare long-term growth and relative performance across allocation strategies.*
 
 ---
 
-### Drawdown Chart
+### Drawdown Profile
 
-**What to plot**
+Tracks peak-to-trough losses through time for each strategy.
 
-- X-axis: calendar time (same horizon as equity curve).  
-- Y-axis: drawdown in percentage terms, computed as  
-  \( 1 - \frac{\text{portfolio value}}{\text{running peak}} \).  
-- One line per strategy, clipped at zero (no positive values).
+![Drawdown](docs/images/drawdown.png)
 
-**How to use it**
-
-- See how deep and how long drawdowns last for each strategy.
-- Contrast smoother risk-parity behavior vs. more aggressive mean–variance allocations.
-
+*Highlights downside risk and recovery characteristics.*
 ---
 
 ### Portfolio Weights Evolution
 
-**What to plot**
+Shows how capital allocation shifts across assets at each rebalance date.
 
-- X-axis: rebalance dates.  
-- Y-axis: stacked area showing weight per asset (summing to 100% at each date).  
-- One stacked area chart per strategy, or subplots comparing strategies.
+![Weights Evolution](docs/images/weights.png)
 
-**How to use it**
-
-- Understand how each strategy shifts capital over time.
-- Spot concentration risk, turnover, and stabilizing vs. reactive behavior.
+*Helps identify concentration risk, turnover, and allocation stability.*
 
 ---
 
-### Strategy Comparison (Suggested Summary Visual)
+### Strategy Comparison
 
-To summarize strategies side by side, add a small set of comparison charts or a table.
+Side-by-side comparison of key performance metrics across strategies.
 
-**Bar Chart: Key Metrics by Strategy**
+![Strategy Comparison](docs/images/metrics_comparison.png)
 
-- X-axis: strategy name (Equal-Weight, Mean–Variance, Risk-Parity).  
-- Y-axis: metric value.  
-- Separate bar charts or grouped bars for:
-  - Annualized return
-  - Annualized volatility
-  - Sharpe ratio
-  - Maximum drawdown
-
-This makes it easy to benchmark trade-offs between return, risk, and efficiency for each allocation rule.
-
+*Summarizes trade-offs between return, volatility, Sharpe ratio, and drawdown.*
 ---
 
 ## Using in Notebooks & Research
